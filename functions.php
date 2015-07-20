@@ -1,3 +1,4 @@
+<?php
 /*
 Theme Name: Theme built for the Puget Sound Association of The Phi Beta Kappa Honor Society
 Author: Bo LOCKWOOD, CHRIS W, 
@@ -10,7 +11,7 @@ Text Domain: PSA-PBK
 Description: This is a theme developed for the Puget Sound Association of The Phi Beta Kappa Honor Society
 Version: 0.0
 */
-<?php
+
 #custom walker include
 require_once('DD_Walker.php');
 
