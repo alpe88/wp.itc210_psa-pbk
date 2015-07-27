@@ -9,23 +9,16 @@ MALAVE, RAFAEL E
 Author URI: 
 Text Domain: PSA-PBK
 Description: This is a theme developed for the Puget Sound Association of The Phi Beta Kappa Honor Society
-Version: 0.0
+Version: 0.1
 */
 
 #custom walker include
 require_once('DD_Walker.php');
 
 #theme support additions
-$theme_args = array(
-	'search-form',
-	'comment-form',
-	'comment-list',
-	'gallery',
-	'caption',
-	'post-thumbnails'
-);
-add_theme_support( 'html5', $theme_args );
-add_post_type_support( 'page', 'excerpt', post-formats );
+add_theme_support('post-thumbnails');
+add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
+add_post_type_support( 'page', 'excerpt', 'post-formats' );
 
 #add RSS feed links to <head> tag
 add_theme_support( 'automatic-feed-links' );
@@ -143,3 +136,26 @@ function SEO_title(){
 	echo ' | ';
 	echo 'Seattle, WA';
 }
+#custom flexslider ala mike sinkula - #genius
+function add_flexslider($cp_id) { 
+	$args = array(
+		'post_type' => 'attachment', 'post_parent' => $cp_id 
+	);
+    $attchs = get_children($args);
+    if ($attchs) {        
+        echo '<div class="flexslider">';
+        echo '<ul class="slides">';
+    
+        foreach ($attchs as $attachment_id => $attachment) {            
+			echo '<li class="img-responsive">';
+            echo wp_get_attachment_image($attachment_id, 'large');
+            echo '<p class="flex-caption">';
+            echo get_post_field('post_content', $attachment->ID);
+            echo '</p>';
+            echo '</li>';
+        }
+        echo '</ul>';
+        echo '</div>';
+    }else {echo 'pusi karu kurvo';}
+}
+add_shortcode( 'flexslider', 'add_flexslider' );
