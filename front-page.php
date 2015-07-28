@@ -25,7 +25,7 @@
 			<!-- the loop -->
 				<?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
 					<article id="post-content-<?php the_ID(); ?>" class="post-content">
-						<?php if(has_post_thumbnail()){the_post_thumbnail('',array('class' => "img-thumbnail img-responsive block-center"));} ?>
+						<?php if(has_post_thumbnail()){the_post_thumbnail('',array('class' => "img-responsive center-block"));} ?>
 								<div class="col-xs-9"><h1><?php the_title(); ?></h1>
 								<?php the_content();?></div>
 					</article>
@@ -35,7 +35,7 @@
 				<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
 			<?php endif; ?>
 		</div>
-		<div class="col-xs-12 col-sm-4">
+		<div class="<?php display_sidebar();?>">
 			<?php get_sidebar();?>
 		</div>
 	</div>

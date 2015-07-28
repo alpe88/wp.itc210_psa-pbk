@@ -1,7 +1,5 @@
 <!-- Search Form Begins Here -->
 <?php $search_terms = htmlspecialchars( $_GET["s"] ); ?>
-<div class="margin-bottom-lg">
-<div class="margin-bottom-sm"></div>
 <form role="search-form" action="<?php bloginfo('siteurl'); ?>/" id="searchform" method="get">
     <label for="s" class="sr-only">Search</label>
     <div class="input-group">
@@ -11,6 +9,4 @@
         </span>
     </div> <!-- .input-group -->
 </form>
-<div class="margin-bottom-sm"></div>
-</div>
 <!-- Search Form Ends Here -->
