@@ -26,6 +26,19 @@ Version: 0.0
     }
 }
 
+/*Twitter Styles*/
+#tw-widget{border:1px solid #000;padding:1% 2%;margin:1% 0;}
+#tw-widget ul {}
+div.user,p.tweet,p.timePosted, p.interact{}
+div.user{border-top:1px solid #000;}
+p.interact{}
+div.user a span span{}
+div.user a img{}
+p.tweet{} 
+p.timePosted{display:none;}
+p.interact a{}
+
+
 /*Footer*/
 #footer-banner{text-decoration:none !important;font-size:2em;}
 #social_navigation_footer{padding: 0.2em;}

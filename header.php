@@ -40,8 +40,15 @@
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
 		<nav id="nav_wrap" class="navbar navbar-default" role="navigation">
-		<?php get_search_form();?>
-		<a href="<?php echo home_url(); ?>"><img class="margin-bottom-sm center-block img-responsive" src="<?php bloginfo('template_directory');?>/images/psa-pbk-logo.jpg" alt="Puget Sound Association of The Phi Beta Kappa Honor Society - Logo." />
+			<div class="margin-bottom-xs"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<?php get_search_form();?>
+					</div>
+				</div>
+			</div>
+			<a href="<?php echo home_url(); ?>"><img class="margin-bottom-sm center-block img-responsive" src="<?php bloginfo('template_directory');?>/images/puget-sound-association-phi-beta-kappa-honor-society-logo.gif" alt="Puget Sound Association of The Phi Beta Kappa Honor Society - Logo." />
 							</a>
 			<div class="container">
 				<div class="row">
