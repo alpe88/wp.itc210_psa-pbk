@@ -39,8 +39,22 @@
 		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
+<<<<<<< HEAD
 		<nav id="nav_wrap" class="navbar navbar-default custom-navbar" role="navigation">
 			<div class="margin-bottom-xs"></div>
+=======
+		<nav id="nav_wrap" class="navbar navbar-default" role="navigation">
+			<div class="margin-bottom-xs"></div>
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<?php get_search_form();?>
+					</div>
+				</div>
+			</div>
+			<a href="<?php echo home_url(); ?>"><img class="margin-bottom-sm center-block img-responsive" src="<?php bloginfo('template_directory');?>/images/puget-sound-association-phi-beta-kappa-honor-society-logo.gif" alt="Puget Sound Association of The Phi Beta Kappa Honor Society - Logo." />
+							</a>
+>>>>>>> origin/master
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
