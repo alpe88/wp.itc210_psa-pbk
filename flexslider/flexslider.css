@@ -20,7 +20,7 @@
 .flex-control-nav,
 .flex-direction-nav {margin: 0; padding: 0; list-style: none;}
 .flexslider .slides li {position: relative;}
-.flex-caption {position:absolute;left:50%;bottom:50%;background:#fff; /* whatever you want */    z-index:1;padding:5px;}
+.flex-caption {position:absolute;left:90%;bottom:0;background:#fff; /* whatever you want */    z-index:1;padding:5px;}
 /* Icon Fonts
 *********************************/
 /* Font-face Icons */

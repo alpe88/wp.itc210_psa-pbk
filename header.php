@@ -39,15 +39,22 @@
 		  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4";
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
-		<nav id="nav_wrap" class="navbar navbar-default" role="navigation">
-		<?php get_search_form();?>
-		<a href="<?php echo home_url(); ?>"><img class="margin-bottom-sm center-block img-responsive" src="<?php bloginfo('template_directory');?>/images/psa-pbk-logo.jpg" alt="Puget Sound Association of The Phi Beta Kappa Honor Society - Logo." />
-							</a>
+		<nav id="nav_wrap" class="navbar navbar-default custom-navbar" role="navigation">
+			<div class="margin-bottom-xs"></div>
 			<div class="container">
 				<div class="row">
 					<div class="col-xs-12">
+						<?php get_search_form();?>
+					</div>
+				</div>
+			</div>
+			<a href="<?php echo home_url(); ?>"><img class="margin-bottom-sm center-block img-responsive" src="<?php bloginfo('template_directory');?>/images/puget-sound-association-phi-beta-kappa-honor-society-logo.gif" alt="Puget Sound Association of The Phi Beta Kappa Honor Society - Logo." />
+							</a>
+			<div class="container-fluid nopadding">
+				<div class="row-fluid nopadding">
+					<div class="col-xs-12 nopadding">
 					<div class="navbar-header">
-						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-main" >
+						<button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-main">
 								<span class="sr-only">Toggle navigation</span>
 									<span class="icon-bar"></span>
 									<span class="icon-bar"></span>

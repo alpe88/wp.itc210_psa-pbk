@@ -165,7 +165,7 @@ $isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows
 	}
 }
 
-#custom flexslider ala mike sinkula - #genius
+#custom flexslider ala mike sinkula - #genius, and a bit tacked on by @!Aleksandar
 function add_flexslider($cp_id) { 
 	$args = array(
 		'post_type' => 'attachment', 'post_parent' => $cp_id 
@@ -176,8 +176,8 @@ function add_flexslider($cp_id) {
         echo '<ul class="slides">';
     
         foreach ($attchs as $attachment_id => $attachment) {            
-			echo '<li class="img-responsive">';
-            echo wp_get_attachment_image($attachment_id, 'large');
+			echo '<li class="img-responsive center-block">';
+            echo wp_get_attachment_image($attachment_id, '');
             echo '<p class="flex-caption">';
             echo get_post_field('post_content', $attachment->ID);
             echo '</p>';
