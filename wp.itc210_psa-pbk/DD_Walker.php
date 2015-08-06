@@ -10,7 +10,7 @@ class DD_Walker extends Walker_Nav_Menu {
        parent::start_el($item_html, $item, $depth, $args);
 
        if ( $item->is_dropdown && $depth === 0 ) {
-           $item_html = str_replace( '<a', '<a class="dropdown-toggle" data-toggle="" data-hover="dropdown" data-delay="500" data-close-others="true" data-clicked="false" onclick="clickMe(this);"', $item_html );
+           $item_html = str_replace( '<a', '<a '.display_control(), $item_html );
            $item_html = str_replace( '</a>', ' <b class="caret"></b></a>', $item_html );
        }
 
@@ -35,4 +35,11 @@ class DD_Walker extends Walker_Nav_Menu {
 
     parent::display_element($element, $children_elements, $max_depth, $depth, $args, $output);
     }
+}
+function display_control(){
+	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
+                    '|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
+                    '|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
+	if($isMobile){return 'class="dropdown-toggle" data-toggle="dropdown"';}
+	else{return 'class="dropdown-toggle" data-toggle="" data-hover="dropdown" data-delay="500" data-close-others="true" data-clicked="false" onclick="clickMe(this);"';}
 }

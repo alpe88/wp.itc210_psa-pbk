@@ -1,0 +1,95 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/*
+Theme Name: Theme built for the Puget Sound Association of The Phi Beta Kappa Honor Society
+Author: Bo LOCKWOOD, CHRIS W, 
+ZHANG, BOQUN, 
+PETROVIC, ALEKSANDAR
+HAILEMARIAM, MAHILET D
+MALAVE, RAFAEL E
+Author URI: 
+Text Domain: PSA-PBK
+Description: This is a theme developed for the Puget Sound Association of The Phi Beta Kappa Honor Society
+Version: 0.0
+*/
+
+/*Bootstrap Overrides*/
+/*Centered Nav Items in Navbar*/
+@media (min-width: 768px) {
+    .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+    }
+
+    .navbar .navbar-collapse {
+        text-align: center;
+    }
+}
+/*Left Menu Button on Smaller Screens*/
+@media (max-width:767px) { 
+	.custom-navbar .nav.navbar-nav.navbar-right li {
+	    float: right;
+	}
+  	.custom-navbar .nav.navbar-nav.navbar-right li > a {
+	    padding:8px 5px;
+	}
+	.custom-navbar .navbar-toggle {
+	    float: left;
+		margin:0 0 8px 15px;
+	}
+	.custom-navbar .navbar-header {
+	    float: left;
+	    width: auto!important;
+	}
+	.custom-navbar .navbar-collapse {
+	    clear: both;
+	    float: none;
+	}
+	/*Search Bar Styles*/
+	#searchform{width:200px!important;float:right!important;position: relative;}
+	#searchform input{position:absolute;width:0px;float:left;margin-left:170px;-webkit-transition: all 1s ease-in-out;-moz-transition: all 1s ease-in-out;-o-transition: all 1s ease-in-out;transition: all 1s ease-in-out;-webkit-appearance: none; border-radius: 0; border-width:0; }
+	#searchform:hover input ,  #searchform input:focus { width: 200px; margin-left: 0px; }
+	#searchform:hover input ,  #searchform input:focus { width: 200px; margin-left: 0px; }
+
+
+}
+/*End Bootstrap Overrides*/
+
+/*Search Button On Small Devices*/
+.search-right{margin:0 15px 0 8px;}
+/*Twitter Styles*/
+#tw-widget{border:1px solid #000;padding:1% 2%;margin:1% 0;}
+#tw-widget ul {}
+div.user,p.tweet,p.timePosted, p.interact{}
+div.user{border-top:1px solid #000;}
+p.interact{}
+div.user a span span{}
+div.user a img{}
+p.tweet{} 
+p.timePosted{display:none;}
+p.interact a{}
+
+/*Footer*/
+#footer-banner{text-decoration:none!important;font-size:4em;}
+#social_navigation_footer{padding: 0.2em;}
+#social_navigation_footer ul li { list-style:none; display: inline-block;}	
+#social_navigation_footer ul li a span { display:none; }
+#social_navigation_footer ul li a:link{text-decoration:none !important; padding:5px;}
+.amzn-smile{margin-top:-5px;}
+
+/*Search Bar Styles: non-small devices*/
+#searchform { width: 200px; margin-left: 0px; float:right; }
+/*Misc:*/
+ul{list-style-type: none;}
+li{list-style-type: none;}
+.b-ud{border-top:1px solid #000000;border-bottom:1px solid #000000;}
+.b-l{border-left:1px solid #000000;}
+.b-r{border-right:1px solid #000000;}
+.b-d{border-bottom:1px solid #000000;}
+.b-u{border-top:1px solid #000000;}
+.p-l{padding-left:2%;} 
+.p-r{padding-right:2%;}
+.p-ud{padding-top:2%;padding-bottom:2%;}
+.tenth{width:10%;}

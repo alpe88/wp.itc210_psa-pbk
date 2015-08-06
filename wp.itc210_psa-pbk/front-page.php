@@ -26,8 +26,12 @@
 				<?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
 					<article id="post-content-<?php the_ID(); ?>" class="post-content">
 						<?php if(has_post_thumbnail()){the_post_thumbnail('',array('class' => "img-responsive center-block"));} ?>
-								<div class="col-xs-9"><h1><?php the_title(); ?></h1>
-								<?php the_content();?></div>
+								<div class="col-xs-12">
+									<h1>
+										<?php the_title(); ?>
+									</h1>
+										<?php the_content();?>
+								</div>
 					</article>
 			<?php endwhile; ?>
 			<?php wp_reset_postdata();?>
@@ -42,6 +46,6 @@
 </div>
 <!-- Main Content Section Ends Here -->
 <!-- Content Ends Here -->
-
+<div class="margin-bottom-sm"></div>
 <!-- Footer Begins Here -->
 <?php get_footer(); ?>
