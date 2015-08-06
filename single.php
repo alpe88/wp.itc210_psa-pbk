@@ -9,10 +9,10 @@
 			<!-- the loop -->
 				<?php while (have_posts()) : the_post(); ?>
 					<article id="post-content-<?php the_ID(); ?>" class="post-content">
-						<!--<div class="col-xs-12 col-sm-8">
+						<div class="col-xs-12 col-sm-8">
 							<?php if(has_post_thumbnail()){the_post_thumbnail('',
 								array('class' => "img-responsive center-block"));} ?>
-						</div>-->
+						</div>
 						<div class="col-xs-12">
 							<h1><?php the_title(); ?></h1>
 								<?php the_content();?>
