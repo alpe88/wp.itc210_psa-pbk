@@ -34,7 +34,7 @@ echo $args['before_title'] . $title . $args['after_title'];
 	wp_enqueue_script('tf', plugin_dir_url(__FILE__) . 'inc/tw/tf.min.js', array('jquery'), '1.0', true);
 	echo	'<div id="tw-widget"></div>';
 	wp_enqueue_script('fb', plugin_dir_url(__FILE__) . 'inc/fb/fb.js', '1.0', true);
-	echo '<div class="fb-page" data-href="https://www.facebook.com/PSAPhiBetaKappa" 
+	echo '<div id="fb-root"></div><div class="fb-page" data-href="https://www.facebook.com/PSAPhiBetaKappa" 
 				data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false"
 				data-show-posts="false">
 				<div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/PSAPhiBetaKappa">
