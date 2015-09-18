@@ -6,6 +6,7 @@
 	<?if($post->post_parent==$parent_id){ ?>
 		<div class="container">
 			<div class="row">
+				<div class="<?php display_content();?>">
 					<?php if(have_posts()): ?>
 					<!-- the loop -->
 						<?php while (have_posts()) : the_post(); ?>
@@ -13,17 +14,22 @@
 								<!--<div class="col-xs-12">
 									<?php if(has_post_thumbnail()){the_post_thumbnail('',
 										array('class' => "img-responsive center-block"));} ?>
-								</div>-->1
+								</div>-->
 								<div class="col-xs-12">
-									<h1><?php the_title(); ?></h1>
-										<div class="col-xs-12"><?php the_content();?></div>
+									<h1>
+										<?php the_title(); ?>
+									</h1>
+									<div class="col-xs-12">
+										<?php the_content();?>
+									</div>
 								</div>
 							</article>
-					<?php endwhile; ?>
-					<?php wp_reset_postdata();?>
+						<?php endwhile; ?>
+						<?php wp_reset_postdata();?>
 					<?php else : ?>
-
+							
 					<?php endif; ?>
+					</div>
 					<div class="<?php display_sidebar();?>">
 						<?php get_sidebar();?>
 					</div>
@@ -31,33 +37,35 @@
 			</div>
 			<div class="container">
 				<div class="row">
-					<?php 
-						$args = array(
-								'post_parent' => $post->ID,
-								'post_type' => 'page'
-								);
-						$posts_query = new WP_Query($args);	?>
-					<?php if($posts_query->have_posts()): ?>
-					<!-- the loop -->
-						<?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
-							<article id="post-content-<?php the_ID(); ?>" class="post-content">
-								<div class="col-xs-12 margin-bottom-md">
-									<div class="col-xs-12 col-sm-3">
-										<?php if(has_post_thumbnail()){the_post_thumbnail('medium',
-										array('class' => "img-responsive"));} ?>
-									</div>2
-									<div class="col-xs-12 col-sm-9">
-										<h3><?php the_title(); ?></h3>
-										<?php the_excerpt();?>
-										<a class="small read-more" href="<?php the_permalink(); ?>"> Learn More >></a>
-									</div>
-								</div>	
-							</article>
-					<?php endwhile; ?>
-					<?php wp_reset_postdata();?>
-					<?php else : ?>
-						<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
-					<?php endif; ?>
+					<div class="<?php display_content();?>">
+						<?php 
+							$args = array(
+									'post_parent' => $post->ID,
+									'post_type' => 'page'
+									);
+							$posts_query = new WP_Query($args);	?>
+						<?php if($posts_query->have_posts()): ?>
+						<!-- the loop -->
+							<?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
+								<article id="post-content-<?php the_ID(); ?>" class="post-content">
+									<div class="col-xs-12 margin-bottom-md">
+										<div class="col-xs-12 col-sm-3">
+											<?php if(has_post_thumbnail()){the_post_thumbnail('medium',
+											array('class' => "img-responsive"));} ?>
+										</div>
+										<div class="col-xs-12 col-sm-9">
+											<h3><?php the_title(); ?></h3>
+											<?php the_excerpt();?>
+											<a class="small read-more" href="<?php the_permalink(); ?>"> Learn More >></a>
+										</div>
+									</div>	
+								</article>
+							<?php endwhile; ?>
+							<?php wp_reset_postdata();?>
+						<?php else : ?>
+						
+						<?php endif; ?>
+					</div>
 					<div class="<?php display_sidebar();?>">
 						<?php get_sidebar();?>
 					</div>
@@ -72,28 +80,34 @@
 	<?php if(is_page($parent_id)){ ?>
 		<div class="container">
 			<div class="row">
+				<div class="<?php display_content();?>">
 					<?php if(have_posts()): ?>
 					<!-- the loop -->
 						<?php while (have_posts()) : the_post(); ?>
 							<article id="post-content-<?php the_ID(); ?>" class="post-content">
-								<!--<div class="col-xs-12">
+								<div class="col-xs-12">
 									<?php if(has_post_thumbnail()){the_post_thumbnail('',
 										array('class' => "img-responsive center-block"));} ?>
-								</div>-->3
+								</div>
 								<div class="col-xs-12 text-center">
 									<h1><?php the_title(); ?></h1>
 										<?php the_excerpt();?>
 								</div>
 							</article>
-					<?php endwhile; ?>
-					<?php wp_reset_postdata();?>
+						<?php endwhile; ?>
+							<?php wp_reset_postdata();?>
 					<?php else : ?>
-						<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
+						
 					<?php endif; ?>
+				</div>
+				<div class="<?php display_sidebar();?>">
+						<?php get_sidebar();?>
+				</div>
 			</div>	
 		</div>
 		<div class="container">
 			<div class="row">
+				<div class="<?php display_content();?>">
 					<?php 
 						$args = array(
 								'post_parent' => $parent_id,
@@ -108,7 +122,7 @@
 									<div class="col-xs-12 col-sm-3">
 										<?php if(has_post_thumbnail()){the_post_thumbnail('medium',
 										array('class' => "img-responsive"));} ?>
-									</div>4
+									</div>
 									<div class="col-xs-12 col-sm-9">
 										<h3><?php the_title(); ?></h3>
 										<?php the_excerpt();?>
@@ -116,11 +130,12 @@
 									</div>
 								</div>	
 							</article>
-					<?php endwhile; ?>
-					<?php wp_reset_postdata();?>
+						<?php endwhile; ?>
+							<?php wp_reset_postdata();?>
 					<?php else : ?>
-						<p><?php _e( 'Sorry, no posts matched your criteria.' ); ?></p>
+						
 					<?php endif; ?>
+				</div>
 				<div class="<?php display_sidebar();?>">
 					<?php get_sidebar();?>
 				</div>

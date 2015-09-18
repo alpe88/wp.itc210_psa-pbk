@@ -1,4 +1,11 @@
 <?php
+function display_control(){
+	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
+                    '|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
+                    '|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
+	if($isMobile){return 'class="dropdown-toggle" data-toggle="dropdown"';}
+	else{return 'class="dropdown-toggle" data-toggle="" data-hover="dropdown" data-delay="500" data-close-others="true" data-clicked="false" onclick="clickMe(this);"';}
+}
 class DD_Walker extends Walker_Nav_Menu {
 
    function start_lvl(&$output, $depth = 0, $args = array()) {
@@ -35,11 +42,4 @@ class DD_Walker extends Walker_Nav_Menu {
 
     parent::display_element($element, $children_elements, $max_depth, $depth, $args, $output);
     }
-}
-function display_control(){
-	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
-                    '|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
-                    '|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
-	if($isMobile){return 'class="dropdown-toggle" data-toggle="dropdown"';}
-	else{return 'class="dropdown-toggle" data-toggle="" data-hover="dropdown" data-delay="500" data-close-others="true" data-clicked="false" onclick="clickMe(this);"';}
 }

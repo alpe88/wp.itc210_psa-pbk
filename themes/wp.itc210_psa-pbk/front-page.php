@@ -20,11 +20,11 @@
 </div>
 <div class="container">
 	<div class="row">
-		<div class="col-xs-12 col-sm-8">
+		<div class="<?php display_content();?>">
 			<?php if($posts_query->have_posts()): ?>
 			<!-- the loop -->
 				<?php while ($posts_query->have_posts()) : $posts_query->the_post(); ?>
-					<article id="post-content-<?php the_ID(); ?>" class="post-content">
+					<article id="post-content-<?php the_ID(); ?>" class="post-content welcome-page">
 						<?php if(has_post_thumbnail()){the_post_thumbnail('',array('class' => "img-responsive center-block"));} ?>
 								<div class="col-xs-12">
 									<h1>

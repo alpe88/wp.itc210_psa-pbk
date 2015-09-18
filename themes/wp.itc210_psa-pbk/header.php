@@ -7,7 +7,10 @@
 	<!-- Begin Favicon Information -->
 	<link rel="shortcut icon" type="image/png" href="" />
 	<!-- Begin Meta Information -->
-
+	 <meta property="og:title" content="Puget Sound Association of Phi Beta Kappa" />
+	 <meta property="og:type" content="An organization fighting for the rights of liberal arts" />
+	 <meta property="og:url" content="http://www.psa-pbk.org" />
+	 <meta property="og:image" content="" />
 	 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
 	 <meta name="description" content="<?php echo strip_tags(get_the_excerpt()); ?>" /> 
 	 <meta name="keywords" content="" /> 

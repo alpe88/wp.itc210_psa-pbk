@@ -11,7 +11,10 @@ Text Domain: PSA-PBK
 Description: This is a theme developed for the Puget Sound Association of The Phi Beta Kappa Honor Society
 Version: 0.1
 */
-
+/*#D8A60C - brand color
+#4062ad - blue
+#af860a - link hover
+f2bb13 - link color*/
 #custom walker include
 require_once('DD_Walker.php');
 #custom breadcrumbs include
@@ -123,7 +126,21 @@ function SEO_title(){
 	echo ' | ';
 	echo 'Seattle, WA';
 }
-
+#custom function for content display
+function display_content(){
+	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
+                    '|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
+                    '|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
+	if(is_front_page() && is_home()){#Default homepage - sidebar displayed
+		echo "col-xs-12 col-sm-8";
+	}elseif (is_front_page()) {#static homepage - sidebar displayed (probably not needed, but better to be complete)
+		echo "col-xs-12 col-sm-8";
+	}elseif (is_home()) {#blog page - sidebar displayed
+		echo "col-xs-12 col-sm-8";
+	}else{#everything else
+		if(is_page()){return "col-xs-12";}
+	}
+}
 #custom function for sidebar display
 function display_sidebar(){
 $isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
@@ -136,60 +153,45 @@ $isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows
 	}elseif (is_home()) {#blog page - sidebar displayed
 		echo "col-xs-12 col-sm-4";
 	}else{#everything else
-		if(is_page('About Us')){return "hidden-xs hidden-sm hidden-md hidden-lg";}
+		if(is_page()){return "hidden-xs hidden-sm hidden-md hidden-lg";}
 	}
 }
 
 #custom flexslider ala mike sinkula - #genius, and a bit tacked on by @!Aleksandar
-#custom flexslider ala mike sinkula - #genius, and a bit tacked on by @!Aleksandar
 function add_flexslider() {
-	
-	global $post; // don't forget to make this a global variable inside your function
-	
-	if ( $images = get_posts(array(
-		'post_parent' => $post->ID,
-		'post_type' => 'attachment',
-		'numberposts' => -1,
-		'post_mime_type' => 'image',)))
-	{
-		foreach( $images as $image ) {
-			$attachmenturl=wp_get_attachment_url($image->ID);
-			$attachmentimage=wp_get_attachment_image_src( $image->ID, full );
-			$imageDescription = apply_filters( 'the_description' , $image->post_content );
-			$imageTitle = apply_filters( 'the_title' , $image->post_title );
-
-			if (!empty($imageDescription)) {
-    echo '<a href="'.$imageDescription .'"><img src="' . $attachmentimage[0] . '" alt=""  /></a>';
-} else { echo '<img src="' . $attachmentimage[0] . '" alt="" />'; }
-		}
-	} else {
-		echo "No Image";
-	}
-	
-	
-	
-	$attachments = get_children(array('order' => 'ASC', 'orderby' => 'menu_order',  'post_type' => 'attachment', 'post_mime_type' => 'image', ));
-	if ($attachments) { // see if there are images attached to posting
-	
-		echo '<div id="spotlight-home" class="flexslider">';
-		echo '<ul class="slides">';
-		
-		foreach ( $attachments as $attachment_id => $attachment ) { // create the list items for images with captions
-		
+	$args = array(#get all posts/pages with this key/value pair
+		'meta_query'	=>	array(
+			array(
+				'key' => 'add-to-front-page'
+			)
+		),
+		'post_type'		=> array('post', 'page')
+	);
+	$ofp = new WP_Query($args);
+	echo '<div class="flexslider">';
+	echo '<ul class="slides">';
+		if ( $ofp->have_posts() ) : while ( $ofp->have_posts() ) : $ofp->the_post();
 			echo '<li>';
-			echo wp_get_attachment_image($attachment_id, 'full'); // get image size large
-			echo '<span class="description">';
-			echo get_post_field('post_content', $attachment->ID); // get image description field
-			echo '</span>';
+			$url = wp_get_attachment_url(get_post_thumbnail_id($ofp->ID));
+			echo '<img src="'.$url.'" alt="Image of '.get_the_title($ofp->ID).' of Puget Sound Association of Phi Beta Kappa Honor Society." />';
+			echo '<span class="flex-caption">'.get_the_title($ofp->ID).'<br />'.get_the_excerpt().'</span>';
 			echo '</li>';
-		
-		}
-	
+	endwhile;
 		echo '</ul>';
 		echo '</div>';
-	
-	} // end see if images attachmed
+	else :
+		_e( 'Sorry, no posts matched your criteria.' );
+	endif;
 } 
 add_shortcode( 'flexslider', 'add_flexslider' );
-
-
+#custom function for search button on mobile.
+function setBtnId(){
+	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
+						'|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
+						'|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
+	if($isMobile){
+		echo 'msrc';
+	}else{
+		echo 'dsrc';
+	}
+}	

@@ -3,9 +3,9 @@
 <form role="search-form" action="<?php bloginfo('siteurl'); ?>/" id="searchform" method="get">
     <label for="s" class="sr-only">Search</label>
     <div class="input-group">
-        <input type="text" class="form-control search-input" id="s" name="s" placeholder="Search"<?php if ( $search_terms !== '' ) { echo ' value="' . $search_terms . '"'; } ?> />
+		<input type="text" class="form-control search-input" id="s" name="s" placeholder="Search"<?php if ( $search_terms !== '' ) { echo ' value="' . $search_terms . '"'; } ?> />
         <span class="input-group-btn">
-            <button id="src" type="submit" class="search-button btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+			<button id="<?php setBtnId();?>" type="submit" class="search-button btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
         </span>
     </div> <!-- .input-group -->
 </form>

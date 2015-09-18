@@ -30,7 +30,7 @@
 						</a>
 					</div>
 					<div class="col-xs-12 text-center">
-						<a id="copy" title="Email Us!" href="/contact/">&copy; <?php $curYear = date('Y'); #Keeps the second year updated
+						<a id="copy" title="Email Us!" href="/contact/">&copy; <?php $curYear = date('Y'); #Keeps the year updated
 											echo $curYear;
 										?> Puget Sound Association of Phi Beta Kappa
 						</a>
@@ -58,30 +58,13 @@
 				}
 			}
 			$('.flexslider').flexslider({
-				animation: "fade",
+				animation: "slide",
 				controlNav: true,
-				directionNav: true
+				directionNav: true,
+				prevText: "",
+				nextText: "",
 			});
-			var w = $(document).width(); console.log(w);
-			if(w < 768){
-				//handles mobile search hover
-				var cc = 1
-				$('.search-button').click(function(e){
-					$('input[type="text"]#s').focus();
-					var input = $('input[type="text"]#s').val().length;console.log(input);
-					if(input <= 0){
-						e.preventDefault();
-					}else{
-						if(cc%2==0){//even
-							return true;
-						}
-						if(cc%2==1){//odd
-							e.preventDefault();
-						}
-						cc++;	
-					}
-				});
-			}
+			
 		});
 	</script>
 <?php wp_footer(); ?>

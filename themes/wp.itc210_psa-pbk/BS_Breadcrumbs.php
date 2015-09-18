@@ -53,10 +53,11 @@ function add_breadcrumbs() {
              
             // If it is a custom post type display name and link
             if($post_type != 'post') {
-                 
+				 
                 $post_type_object = get_post_type_object($post_type);
                 $post_type_archive = get_post_type_archive_link($post_type);
-             
+				/*Because the breadcrumb is too good, and the time.ly plugin kind of sucks the nuts...*/
+				if($post_type == 'ai1ec_event'){$post_type_archive = home_url('events');}
                 echo '<li class="item-cat item-custom-post-type-' . $post_type . '"><a class="bread-cat bread-custom-post-type-' . $post_type . '" href="' . $post_type_archive . '" title="' . $post_type_object->labels->name . '">' . $post_type_object->labels->name . '</a></li>';
                 /*echo '<li class="separator"> ' . $separator . ' </li>';*/
              
@@ -69,7 +70,7 @@ function add_breadcrumbs() {
             $last_category = end(array_values($category));
              
             // Get parent any categories and create array
-            $get_cat_parents = rtrim(get_category_parents($last_category->term_id, true, ','),',');
+            //$get_cat_parents = rtrim(get_category_parents($last_category->term_id, true, ','),',');
             $cat_parents = explode(',',$get_cat_parents);
              
             // Loop through parent categories and store in variable $cat_display
