@@ -1,24 +1,18 @@
 <?php
 /*
 Theme Name: Theme built for the Puget Sound Association of The Phi Beta Kappa Honor Society
-Author: Bo LOCKWOOD, CHRIS W, 
-ZHANG, BOQUN, 
+Author: LOCKWOOD, CHRIS W, 
 PETROVIC, ALEKSANDAR
-HAILEMARIAM, MAHILET D
-MALAVE, RAFAEL E
 Author URI: 
 Text Domain: PSA-PBK
 Description: This is a theme developed for the Puget Sound Association of The Phi Beta Kappa Honor Society
-Version: 0.1
+Version: 0.3
 */
-/*#D8A60C - brand color
-#4062ad - blue
-#af860a - link hover
-f2bb13 - link color*/
+
 #custom walker include
-require_once('DD_Walker.php');
-#custom breadcrumbs include
-require_once('BS_Breadcrumbs.php');
+require_once('BS_Walker.php');
+require_once('Two_Column_Menu_Walker.php');
+
 #theme support additions
 add_theme_support('post-thumbnails');
 add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption' ) );
@@ -51,9 +45,10 @@ add_filter( 'widget_text', 'do_shortcode');
 if ( function_exists( 'register_nav_menus' ) ) {
 	register_nav_menus(
 		array(
-		  'main-menu' => 'Main Menu',
+		  'header-menu' => 'Header Menu',
+		  'footer-menu' => 'Footer Menu',
 		  'utility-menu' => 'Utility Menu',
-		  'social_menu' => 'Social Menu' 
+		  'social-menu' => 'Social Menu'
 		)
 	);
 }   
@@ -98,6 +93,10 @@ function remove_excerpt_more( $more ) {
 }
 add_filter('excerpt_more', 'remove_excerpt_more');
 
+function custom_excerpt_length( $length ) {
+	return 20;
+}
+add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 #SEO Titling:
 function SEO_title(){
 	global $post;
@@ -126,55 +125,31 @@ function SEO_title(){
 	echo ' | ';
 	echo 'Seattle, WA';
 }
-#custom function for content display
-function display_content(){
-	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
-                    '|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
-                    '|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
-	if(is_front_page() && is_home()){#Default homepage - sidebar displayed
-		echo "col-xs-12 col-sm-8";
-	}elseif (is_front_page()) {#static homepage - sidebar displayed (probably not needed, but better to be complete)
-		echo "col-xs-12 col-sm-8";
-	}elseif (is_home()) {#blog page - sidebar displayed
-		echo "col-xs-12 col-sm-8";
-	}else{#everything else
-		if(is_page()){return "col-xs-12";}
-	}
+#get current url for og:url tag
+function this_url(){
+	$base_url = "http://www.psa-pbk.org";
+	$path = $_SERVER['REQUEST_URI'];
+	$this_url = $base_url + $path;
+	return $this_url;
 }
-#custom function for sidebar display
-function display_sidebar(){
-$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
-                    '|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
-                    '|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
-	if(is_front_page() && is_home()){#Default homepage - sidebar displayed
-		echo "col-xs-12 col-sm-4";
-	}elseif (is_front_page()) {#static homepage - sidebar displayed (probably not needed, but better to be complete)
-		echo "col-xs-12 col-sm-4";
-	}elseif (is_home()) {#blog page - sidebar displayed
-		echo "col-xs-12 col-sm-4";
-	}else{#everything else
-		if(is_page()){return "hidden-xs hidden-sm hidden-md hidden-lg";}
-	}
-}
-
-#custom flexslider ala mike sinkula - #genius, and a bit tacked on by @!Aleksandar
-function add_flexslider() {
+#custom flexslider - #genius, and a bit tacked on by @!Aleksandar
+function add_flexslider($class) {
 	$args = array(#get all posts/pages with this key/value pair
 		'meta_query'	=>	array(
 			array(
-				'key' => 'add-to-front-page'
+				'key' => 'On Front Page'
 			)
 		),
 		'post_type'		=> array('post', 'page')
 	);
 	$ofp = new WP_Query($args);
-	echo '<div class="flexslider">';
+	echo '<div class="flexslider '.$class.'">';
 	echo '<ul class="slides">';
 		if ( $ofp->have_posts() ) : while ( $ofp->have_posts() ) : $ofp->the_post();
 			echo '<li>';
 			$url = wp_get_attachment_url(get_post_thumbnail_id($ofp->ID));
-			echo '<img src="'.$url.'" alt="Image of '.get_the_title($ofp->ID).' of Puget Sound Association of Phi Beta Kappa Honor Society." />';
-			echo '<span class="flex-caption">'.get_the_title($ofp->ID).'<br />'.get_the_excerpt().'</span>';
+			echo '<img class="center-block img-cover" src="'.$url.'" alt="Image of '.get_the_title($ofp->ID).' of Puget Sound Association of Phi Beta Kappa Honor Society." />';
+			echo '<span class="flex-caption"><span class="flex-caption-content">'.get_the_title($ofp->ID).'<br />'.get_the_excerpt().'</span></span>';
 			echo '</li>';
 	endwhile;
 		echo '</ul>';
@@ -184,14 +159,182 @@ function add_flexslider() {
 	endif;
 } 
 add_shortcode( 'flexslider', 'add_flexslider' );
-#custom function for search button on mobile.
-function setBtnId(){
-	$isMobile = (bool)preg_match('#\b(ip(hone|od|ad)|android|opera m(ob|in)i|windows (phone|ce)|blackberry|tablet'.
-						'|s(ymbian|eries60|amsung)|p(laybook|alm|rofile/midp|laystation portable)|nokia|fennec|htc[\-_]'.
-						'|mobile|up\.browser|[1-4][0-9]{2}x[1-4][0-9]{2})\b#i', $_SERVER['HTTP_USER_AGENT'] );
-	if($isMobile){
-		echo 'msrc';
-	}else{
-		echo 'dsrc';
+
+#script for carousel
+function flexsliderJs() { ?>
+
+<script>
+jQuery(document).ready(function($){
+  $('.flexslider').flexslider({
+				animation: "slide",
+				controlNav: false,
+				directionNav: true,
+				prevText: "",
+				nextText: "",
+			});
+});
+</script>
+<?php
+}
+add_action('wp_footer', 'flexsliderJs');
+
+#another slider using native BS3
+function alt_highlight_slider(){
+	$highlights_number = 0;
+	$args = array(#get all posts/pages with this key/value pair
+		'meta_query'	=>	array(
+			array(
+				'key' => 'On Front Page'
+			)
+		),
+		'post_type'		=> array('post', 'page'),
+		'orderby' => 'id',
+		'order'   => 'ASC',
+	);
+	$ofp = new WP_Query($args);
+	$htmlstr = '';
+	if($ofp->have_posts()){
+		$htmlstr .= '<div id="highlights" class="carousel slide">';
+			$htmlstr .= '<ol class="carousel-indicators">';		
+				while($ofp->have_posts()):$ofp->the_post();
+				$htmlstr .= '<li data-target="#highlights" data-slide-to='.$highlights_number++.'></li>';
+				endwhile;
+			$htmlstr .= '</ol>';
+			
+			$htmlstr .= '<div class="carousel-inner">';
+				while($ofp->have_posts()):$ofp->the_post();
+					$htmlstr .= '<div class="item">';
+						$url = wp_get_attachment_image_src(get_post_thumbnail_id(get_the_ID()), 'full', true);
+						$htmlstr .= '<div class="fill" style="background-image:url('.$url[0].')">';
+							$htmlstr .=	'<div class="text-center">';
+								$htmlstr .= '<div class="container">';
+									$htmlstr .= '<div class="row vh-55">';
+										$htmlstr .= '<div class="row-height">';
+											$htmlstr .= '<div class="col-xs-12 col-height col-middle">';
+												$htmlstr .= '<div class="inside">';
+													$htmlstr .= '<div class="content">';
+														$htmlstr .= '<h2 class="text-xxl">'.showMeta('Post Sub Caption').'</h2>';
+													$htmlstr .= '</div>';
+												$htmlstr .= '</div>';
+											$htmlstr .= '</div>';
+										$htmlstr .= '</div>';
+									$htmlstr .= '</div>';
+									
+									$htmlstr .= '<div class="row">';
+										$htmlstr .= '<div class="row-height">';
+											$htmlstr .= '<div class="col-xs-12 col-height col-bottom">';
+												$htmlstr .= '<div class="inside">';
+													$htmlstr .= '<div class="content">';
+														if(showMeta('Post Sub Caption') == 'The Nation\'s Oldest Academic Honor Society'){
+															$htmlstr .= '<a href="#1" class="text-lg">';
+																$htmlstr .= '<p class="btn btn-primary text-lg uppercase">welcome</p>';
+																$htmlstr .= '<br/>';
+																$htmlstr .= '<i class="text-lg fa fa-angle-down"></i>';
+															$htmlstr .= '</a>';
+														}else{
+															$htmlstr .= '<a href="'.get_the_permalink($ofp->ID).'" class="text-lg">';
+															$htmlstr .= '<h3>'.get_the_excerpt($ofp->ID).'</h3>';
+															$htmlstr .= '</a>';
+														}
+													$htmlstr .= '</div>';
+												$htmlstr .= '</div>';
+											$htmlstr .= '</div>';
+										$htmlstr .= '</div>';
+									$htmlstr .= '</div>';
+								$htmlstr .= '</div>	';
+							$htmlstr .= '</div>';
+						$htmlstr .= '</div>';
+					$htmlstr .= '</div>';
+				endwhile;
+			$htmlstr .= '</div>';
+			
+				$htmlstr .= '<!-- Controls -->';
+				$htmlstr .= '<a class="left carousel-control" href="#highlights" data-slide="prev">';
+					$htmlstr .= '<span class="icon-prev"></span>';
+				$htmlstr .= '</a>';
+				$htmlstr .= '<a class="right carousel-control" href="#highlights" data-slide="next">';
+					$htmlstr .= '<span class="icon-next"></span>';
+				$htmlstr .= '</a>';
+		$htmlstr .= '</div>';
 	}
-}	
+	else{
+		$htmlstr = '		<div class="fill" style="background-image:url('. bloginfo('template_directory').'/images/fpstock.jpg\')">';
+		$htmlstr = '			<div class="col-xs-12 text-center">';
+		$htmlstr = '				<div class="vh-45"></div>';
+		$htmlstr = '				<a href="#1" class="text-lg">';
+		$htmlstr = '					<p class="btn btn-primary text-lg uppercase">welcome</p>';
+		$htmlstr = '					<br/>';
+		$htmlstr = '					<i class="text-lg fa fa-angle-down"></i>';
+		$htmlstr = '				</a>';
+		$htmlstr = '			</div>';
+		$htmlstr = '		</div>';
+		
+	}
+	return $htmlstr;
+}
+
+#script for carousel
+function highlightsJs() { ?>
+
+<script>
+jQuery(document).ready(function($){
+  $("#highlights .carousel-indicators li:first").addClass("active");
+  $("#highlights .carousel-inner .item:first").addClass("active");
+   $("#highlights").carousel({
+  interval: 6000
+  })
+});
+</script>
+<?php
+}
+add_action('wp_footer', 'highlightsJs');
+
+#get meta information - the convenient way (:
+function showMeta($arg){
+	return get_post_meta(get_the_ID(),$arg, true);
+}
+
+#get all sub pages
+function get_all_subpages($page, $args = '', $output = OBJECT) {
+    // Validate 'page' parameter
+    if (! is_numeric($page))
+        $page = 0;
+
+    // Set up args
+    $default_args = array(
+        'post_type' => 'page',
+    );
+    if (empty($args))
+        $args = array();
+    elseif (! is_array($args))
+        if (is_string($args))
+            parse_str($args, $args);
+        else
+            $args = array();
+    $args = array_merge($default_args, $args);
+    $args['post_parent'] = $page;
+
+    // Validate 'output' parameter
+    $valid_output = array(OBJECT, ARRAY_A, ARRAY_N);
+    if (! in_array($output, $valid_output))
+        $output = OBJECT;
+
+    // Get children
+    $subpages = array();
+    $children = get_children($args, $output);
+    foreach ($children as $child) {
+        $subpages[] = $child;
+
+        if (OBJECT === $output)
+            $page = $child->ID;
+        elseif (ARRAY_A === $output)
+            $page = $child['ID'];
+        else
+            $page = $child[0];
+
+        // Get subpages by recursion
+        $subpages = array_merge($subpages, get_all_subpages($page, $args, $output));
+    }
+
+    return $subpages;
+}

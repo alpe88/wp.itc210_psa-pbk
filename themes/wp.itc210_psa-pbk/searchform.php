@@ -5,7 +5,7 @@
     <div class="input-group">
 		<input type="text" class="form-control search-input" id="s" name="s" placeholder="Search"<?php if ( $search_terms !== '' ) { echo ' value="' . $search_terms . '"'; } ?> />
         <span class="input-group-btn">
-			<button id="<?php setBtnId();?>" type="submit" class="search-button btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+			<button type="submit" class="search-button btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
         </span>
     </div> <!-- .input-group -->
 </form>
