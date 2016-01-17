@@ -23,10 +23,12 @@
 											));
 				?>
 			</ul>
+			<div class="text-center">
 			<a id="copy" title="Email Us!" href="/contact/">&copy; <?php $curYear = date('Y'); #Keeps the year updated
 				echo $curYear;
 				?> Puget Sound Association of Phi Beta Kappa
 			</a>
+			</div>
 		</div>
 		<div class="col-xs-4">
 			<ul class="social-menu center-block text-center margin-bottom-lg">

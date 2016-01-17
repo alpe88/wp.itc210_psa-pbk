@@ -40,8 +40,7 @@
 	<?php wp_reset_postdata();?>
 		
 	<?php
-		$content = ['awards', 'scholarships', 'executive','chapter-representatives','activities','membership','archival-management',
-								'development','finance','financial-records-review','nominating'];
+		$content = ['history'];
 	?>
 	<div class="container">
 		<div class="row">
@@ -49,7 +48,7 @@
 				<div class="col-xs-12 col-height col-middle">
 					<div class="inside">
 						<div class="content">
-							<?php echo add_flexslider2($content, "","Committees");?>
+							<?php echo add_flexslider2($content, "","");?>
 						</div>
 					</div>
 				</div>

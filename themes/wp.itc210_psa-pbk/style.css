@@ -24,20 +24,31 @@ Version: 0.3
     font-style: normal;
 }
 html,body{font-family:'champagne__limousinesregular', Garamond, serif!important;overflow-x:hidden;}
-@media (max-width:767px) { 
-
+ /* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+   
 }
-@media (min-width: 768px) {
 
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+	
 }
+
 /* Small Devices, Tablets */
-@media (max-width: 1024px) {
+@media only screen and (min-width : 768px) {
 
 }
-/*Large Devices, Desktops*/
-@media (min-width: 1025px){
 
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+	
 }
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+ 
+}
+
 
 /*front-page.php covers*/
 .carousel,.item,.active {height: 100%;}

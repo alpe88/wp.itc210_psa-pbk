@@ -97,6 +97,19 @@ function custom_excerpt_length( $length ) {
 	return 20;
 }
 add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
+
+#get post thumbnail url
+function getThumbURL($postID,$size){
+	$thumb_id = get_post_thumbnail_id($postID);
+	$thumb_url_array = wp_get_attachment_image_src($thumb_id, $size, true);
+	$thumb_url = $thumb_url_array[0];
+	return $thumb_url;
+}
+#get meta information - the convenient way (:
+function showMeta($arg){
+	return get_post_meta(get_the_ID(),$arg, true);
+}
+
 #SEO Titling:
 function SEO_title(){
 	global $post;
@@ -143,20 +156,23 @@ function add_flexslider($class) {
 		'post_type'		=> array('post', 'page')
 	);
 	$ofp = new WP_Query($args);
-	echo '<div class="flexslider '.$class.'">';
-	echo '<ul class="slides">';
+	$htmlstr = '';
+	$htmlstr .= '<div class="flexslider '.$class.'">';
+	$htmlstr .= '<ul class="slides">';
 		if ( $ofp->have_posts() ) : while ( $ofp->have_posts() ) : $ofp->the_post();
-			echo '<li>';
+			$htmlstr .= '<li>';
 			$url = wp_get_attachment_url(get_post_thumbnail_id($ofp->ID));
-			echo '<img class="center-block img-cover" src="'.$url.'" alt="Image of '.get_the_title($ofp->ID).' of Puget Sound Association of Phi Beta Kappa Honor Society." />';
-			echo '<span class="flex-caption"><span class="flex-caption-content">'.get_the_title($ofp->ID).'<br />'.get_the_excerpt().'</span></span>';
-			echo '</li>';
+			$htmlstr .= '<img class="center-block img-cover" src="'.$url.'" alt="Image of '.get_the_title($ofp->ID).' of Puget Sound Association of Phi Beta Kappa Honor Society." />';
+			$htmlstr .= '<span class="flex-caption"><span class="flex-caption-content">'.get_the_title($ofp->ID).'<br />'.get_the_excerpt().'</span></span>';
+			$htmlstr .= '</li>';
 	endwhile;
-		echo '</ul>';
-		echo '</div>';
+		$htmlstr .= '</ul>';
+		$htmlstr .= '</div>';
 	else :
 		_e( 'Sorry, no posts matched your criteria.' );
 	endif;
+	add_action('wp_footer', 'flexsliderJs');
+	return $htmlstr;
 } 
 add_shortcode( 'flexslider', 'add_flexslider' );
 
@@ -176,9 +192,8 @@ jQuery(document).ready(function($){
 </script>
 <?php
 }
-add_action('wp_footer', 'flexsliderJs');
 
-#another slider using native BS3
+#another slider using native BS3: returns string
 function alt_highlight_slider(){
 	$highlights_number = 0;
 	$args = array(#get all posts/pages with this key/value pair
@@ -226,11 +241,13 @@ function alt_highlight_slider(){
 												$htmlstr .= '<div class="inside">';
 													$htmlstr .= '<div class="content">';
 														if(showMeta('Post Sub Caption') == 'The Nation\'s Oldest Academic Honor Society'){
+															/*
 															$htmlstr .= '<a href="#1" class="text-lg">';
 																$htmlstr .= '<p class="btn btn-primary text-lg uppercase">welcome</p>';
 																$htmlstr .= '<br/>';
 																$htmlstr .= '<i class="text-lg fa fa-angle-down"></i>';
 															$htmlstr .= '</a>';
+															*/
 														}else{
 															$htmlstr .= '<a href="'.get_the_permalink($ofp->ID).'" class="text-lg">';
 															$htmlstr .= '<h3>'.get_the_excerpt($ofp->ID).'</h3>';
@@ -270,6 +287,8 @@ function alt_highlight_slider(){
 		$htmlstr = '		</div>';
 		
 	}
+	add_action('wp_footer', 'highlightsJs');
+	wp_reset_postdata();
 	return $htmlstr;
 }
 
@@ -287,54 +306,88 @@ jQuery(document).ready(function($){
 </script>
 <?php
 }
-add_action('wp_footer', 'highlightsJs');
 
-#get meta information - the convenient way (:
-function showMeta($arg){
-	return get_post_meta(get_the_ID(),$arg, true);
-}
 
-#get all sub pages
-function get_all_subpages($page, $args = '', $output = OBJECT) {
-    // Validate 'page' parameter
-    if (! is_numeric($page))
-        $page = 0;
+#custom flexslider - #genius, and a bit tacked on by @!Aleksandar: returns string
+function add_flexslider2($content,$class,$key) {
+	$args = array(
+			'post_name__in'      => $content,
+			'post_type' => array( 'post', 'page' ),
+			'order' => 'ASC',
+			
+			'posts_per_page' => -1,
+			);
+		$p = new WP_Query($args);
+		$htmlstr = '';
+	$htmlstr .= '<div class="flexslider '.$class.'">';
+	$htmlstr .= '<ul class="slides">';
+	if ( $p->have_posts() ) : while ( $p->have_posts() ) : $p->the_post();
+			$htmlstr .= '<li>';
+				if($key != "" ){
+					$htmlstr .= '<h2 class="text-center">'.get_the_title($p->ID).'</h2>';
+					$htmlstr .= '<p class="text-center">'.get_the_excerpt($p->ID).'<br />Committee Members include:</p>';
+					$cp = getPostFromMeta($key,get_the_title($p->ID));$htmlstr .= $cp;
+				}else{
+					$htmlstr .= '<p class="text-center">'.get_the_excerpt($p->ID).'';
+					$htmlstr .= get_sub_pages($p->ID);
+				}
+			$htmlstr .= '</li>';
+	endwhile;
+		$htmlstr .= '</ul>';
+		$htmlstr .= '</div>';
+	else :
+		$htmlstr = ( 'Sorry, no posts matched your criteria.' );
+	endif;
+	wp_reset_postdata();
+	add_action('wp_footer', 'flexsliderJs');
+	return $htmlstr;
+} 
+add_shortcode( 'flexslider2', 'add_flexslider2' );
 
-    // Set up args
-    $default_args = array(
-        'post_type' => 'page',
-    );
-    if (empty($args))
-        $args = array();
-    elseif (! is_array($args))
-        if (is_string($args))
-            parse_str($args, $args);
-        else
-            $args = array();
-    $args = array_merge($default_args, $args);
-    $args['post_parent'] = $page;
-
-    // Validate 'output' parameter
-    $valid_output = array(OBJECT, ARRAY_A, ARRAY_N);
-    if (! in_array($output, $valid_output))
-        $output = OBJECT;
-
-    // Get children
-    $subpages = array();
-    $children = get_children($args, $output);
-    foreach ($children as $child) {
-        $subpages[] = $child;
-
-        if (OBJECT === $output)
-            $page = $child->ID;
-        elseif (ARRAY_A === $output)
-            $page = $child['ID'];
-        else
-            $page = $child[0];
-
-        // Get subpages by recursion
-        $subpages = array_merge($subpages, get_all_subpages($page, $args, $output));
-    }
-
-    return $subpages;
+#get posts with given meta: return string, used for displaying the committee members
+function getPostFromMeta($key,$value){
+	$args = array(#get all posts/pages with this key/value pair
+		'meta_query'	=>	array(
+			array(
+				'key' => $key,
+				'value' => $value,
+			)
+		),
+		'post_type'		=> array('page')
+	);
+	$p = new WP_Query($args);
+	$htmlstr = '';
+	/*$htmlstr .= '<div class="row">';
+		$htmlstr .= '<div class="col-xs-12">';
+			$htmlstr .= '<div class="row">';*/
+	if ( $p->have_posts() ) : while ( $p->have_posts() ) : $p->the_post();
+							$htmlstr .= '<div class="col-xs-6 text-center">';
+							$htmlstr .= '<div class="col-xs-6 col-xs-offset-3">';
+								if(has_post_thumbnail()){
+									$htmlstr .= '<div class="col-xs-12">';
+									/*	$htmlstr .= '<div class="inside">';
+											$htmlstr .= '<div class="content">';*/
+												$htmlstr .= '<img class="center-block img-responsive" src="'.getThumbURL($p->ID, 'thumbnail').'" alt="Image of '.get_the_title($p->ID).'" />';
+									/*		$htmlstr .= '</div>';
+										$htmlstr .= '</div>';*/
+									$htmlstr .= '</div>';
+								}
+									$htmlstr .= '<div class="col-xs-12">';
+										/*$htmlstr .= '<div class="inside">';
+											$htmlstr .= '<div class="content">';*/
+												$htmlstr .= '<p class=""><a href="'.get_the_permalink($p->ID).'">'.get_the_title($p->ID).'</a></p>';
+										/*	$htmlstr .= '</div>';
+										$htmlstr .= '</div>';*/
+									$htmlstr .= '</div>';
+							$htmlstr .= '</div>';
+							$htmlstr .= '</div>';
+	endwhile;
+	else :
+		$htmlstr = ( 'Sorry, no posts matched your criteria.' );
+	endif;
+	/*				$htmlstr .= '</div>';
+			$htmlstr .= '</div>';
+		$htmlstr .= '</div>';*/
+	wp_reset_postdata();
+	return $htmlstr;
 }
