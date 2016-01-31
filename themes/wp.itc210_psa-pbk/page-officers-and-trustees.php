@@ -69,6 +69,7 @@
 			<div id="2" class="col-xs-12">
 				<?php
 					$args = array(
+								'post_status' => 'publish',
 								'post_type' => 'page',
 								'order' => 'ASC',
 								'meta_query'	=>	array(

@@ -60,7 +60,7 @@
 							<span class="icon-bar"></span>
 						</button>
 					</div>
-					<div id="tabbed_menu" class="navbar-collapse collapse navbar-main">
+					<div id="" class="navbar-collapse collapse navbar-main">
 						<ul class="nav navbar-nav" id="main-menu">
 							<?php wp_nav_menu(
 									array( 

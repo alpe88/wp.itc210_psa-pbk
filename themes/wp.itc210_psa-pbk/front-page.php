@@ -149,25 +149,6 @@
 		</div>
 	</div>
 	
-	<!-- Social Posts and Image -->
-	<div class="container">
-		<div class="row">
-			<div id="4" class="col-xs-12 nopadding">
-				<?php recent_facebook_posts(array(
-												'likes' => 1, // show like count, 1 = yes, 0 = no
-												'comments' => 1, // show comment count, 1 = yes, 0 = no
-												'excerpt_length' => 20, // the number of characters to show from each post
-												'number' => 1, // number of posts to show,
-												'show_page_link' => 0, // show a link to Facebook page after posts?
-												'el' => 'div', // which element to use as a post container?
-												'show_link_previews' => 1, // show preview of attached links?
-												)
-											);
-				?>
-			</div>
-		</div>
-	</div>
-	
 <!-- Content Ends Here -->
 <div class="margin-bottom-md"></div>
 <!-- Footer Begins Here -->

@@ -98,6 +98,9 @@ function custom_excerpt_length( $length ) {
 }
 add_filter( 'excerpt_length', 'custom_excerpt_length', 999 );
 
+#remove wp generated formatting from content
+remove_filter('the_content', 'wpautop');
+
 #get post thumbnail url
 function getThumbURL($postID,$size){
 	$thumb_id = get_post_thumbnail_id($postID);
@@ -153,7 +156,8 @@ function add_flexslider($class) {
 				'key' => 'On Front Page'
 			)
 		),
-		'post_type'		=> array('post', 'page')
+		'post_type'		=> array('post', 'page'),
+		'post_status' 	 => 'publish',
 	);
 	$ofp = new WP_Query($args);
 	$htmlstr = '';
@@ -205,6 +209,7 @@ function alt_highlight_slider(){
 		'post_type'		=> array('post', 'page'),
 		'orderby' => 'id',
 		'order'   => 'ASC',
+		'post_status' 	 => 'publish',
 	);
 	$ofp = new WP_Query($args);
 	$htmlstr = '';
@@ -223,12 +228,13 @@ function alt_highlight_slider(){
 						$htmlstr .= '<div class="fill" style="background-image:url('.$url[0].')">';
 							$htmlstr .=	'<div class="text-center">';
 								$htmlstr .= '<div class="container">';
-									$htmlstr .= '<div class="row vh-55">';
+									$htmlstr .= '<div class="row vh-45">';
 										$htmlstr .= '<div class="row-height">';
 											$htmlstr .= '<div class="col-xs-12 col-height col-middle">';
 												$htmlstr .= '<div class="inside">';
 													$htmlstr .= '<div class="content">';
 														$htmlstr .= '<h2 class="text-xxl">'.showMeta('Post Sub Caption').'</h2>';
+														$htmlstr .= '<h3 class="text-xxl">'.showMeta('Post Sub Caption').'</h2>';
 													$htmlstr .= '</div>';
 												$htmlstr .= '</div>';
 											$htmlstr .= '</div>';
@@ -314,7 +320,7 @@ function add_flexslider2($content,$class,$key) {
 			'post_name__in'      => $content,
 			'post_type' => array( 'post', 'page' ),
 			'order' => 'ASC',
-			
+			'post_status' 	 => 'publish',
 			'posts_per_page' => -1,
 			);
 		$p = new WP_Query($args);
@@ -322,16 +328,15 @@ function add_flexslider2($content,$class,$key) {
 	$htmlstr .= '<div class="flexslider '.$class.'">';
 	$htmlstr .= '<ul class="slides">';
 	if ( $p->have_posts() ) : while ( $p->have_posts() ) : $p->the_post();
-			$htmlstr .= '<li>';
 				if($key != "" ){
-					$htmlstr .= '<h2 class="text-center">'.get_the_title($p->ID).'</h2>';
-					$htmlstr .= '<p class="text-center">'.get_the_excerpt($p->ID).'<br />Committee Members include:</p>';
-					$cp = getPostFromMeta($key,get_the_title($p->ID));$htmlstr .= $cp;
+					$htmlstr .= '<li>';
+						$htmlstr .= '<h2 class="text-center">'.get_the_title($p->ID).'</h2>';
+						$htmlstr .= '<p class="text-center">'.get_the_excerpt($p->ID).'<br />Committee Members include:</p>';
+						$cp = getPostFromMeta($key,get_the_title($p->ID));$htmlstr .= $cp;
+					$htmlstr .= '</li>';
 				}else{
-					$htmlstr .= '<p class="text-center">'.get_the_excerpt($p->ID).'';
-					$htmlstr .= get_sub_pages($p->ID);
+					$cp = getPostFromChildren();$htmlstr .= $cp;
 				}
-			$htmlstr .= '</li>';
 	endwhile;
 		$htmlstr .= '</ul>';
 		$htmlstr .= '</div>';
@@ -353,7 +358,8 @@ function getPostFromMeta($key,$value){
 				'value' => $value,
 			)
 		),
-		'post_type'		=> array('page')
+		'post_type'		=> array('page'),
+		'post_status' 	 => 'publish',
 	);
 	$p = new WP_Query($args);
 	$htmlstr = '';
@@ -388,6 +394,49 @@ function getPostFromMeta($key,$value){
 	/*				$htmlstr .= '</div>';
 			$htmlstr .= '</div>';
 		$htmlstr .= '</div>';*/
+	wp_reset_postdata();
+	return $htmlstr;
+}
+
+function getPostFromChildren(){
+	global $post;
+	$args = array(
+		'post_type'      => 'page',
+		'posts_per_page' => -1,
+		'post_parent'    => $post->ID,
+		'order'          => 'ASC',
+		'orderby'        => 'menu_order',
+		'post_status' 	 => 'publish',
+	 );
+	
+	$p = new WP_Query($args);
+	$htmlstr = '';
+	if ( $p->have_posts() ) : while ( $p->have_posts() ) : $p->the_post();
+		$htmlstr .= '<li>';
+			$htmlstr .= '<div class="col-xs-12 text-center">';
+				$htmlstr .= '<h2>'.get_the_title($p->ID).'</h2>';
+					if(has_post_thumbnail()){
+					$htmlstr .= '<div class="col-xs-12">';
+						/*	$htmlstr .= '<div class="inside">';
+								$htmlstr .= '<div class="content">';*/
+									$htmlstr .= '<img class="center-block img-responsive" src="'.getThumbURL($p->ID, 'thumbnail').'" alt="Image of '.get_the_title($p->ID).'" />';
+						/*		$htmlstr .= '</div>';
+							$htmlstr .= '</div>';*/
+					$htmlstr .= '</div>';
+					}
+					$htmlstr .= '<div class="col-xs-12">';
+						/*$htmlstr .= '<div class="inside">';
+							$htmlstr .= '<div class="content">';*/
+								$htmlstr .= '<p class="">'.get_the_content($p->ID).'</p>';
+							/*	$htmlstr .= '</div>';
+						$htmlstr .= '</div>';*/
+					$htmlstr .= '</div>';
+				$htmlstr .= '</div>';
+		$htmlstr .= '</li>';
+	endwhile;
+	else :
+		$htmlstr = ( 'Sorry, no posts matched your criteria.' );
+	endif;
 	wp_reset_postdata();
 	return $htmlstr;
 }

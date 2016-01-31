@@ -67,7 +67,8 @@
 				<?php
 					$args = array(
 								'post_parent' => $post->ID,
-								'post_type' => 'page'
+								'post_type' => 'page',
+								'post_status' 	 => 'publish',
 								);
 						$p = new WP_Query($args);
 				?>
@@ -83,7 +84,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-xs-6 col-height col-middle border-top">
+							<div class="col-xs-6 col-height col-middle">
 								<div class="inside">
 									<div class="content">
 										<div class="">
@@ -105,7 +106,7 @@
 				<?php } else {#even ?>
 					<div class="row">
 						<div class="row-height">
-							<div class="col-xs-6 col-height col-middle border-top">
+							<div class="col-xs-6 col-height col-middle">
 								<div class="inside">
 									<div class="content">
 										<div class="">
